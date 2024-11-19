@@ -1,5 +1,3 @@
-
-
 import { Formik, Form, Field, FieldArray } from "formik";
 import {
   ClassicEditor,
@@ -15,7 +13,9 @@ import jsPDF from "jspdf";
 import { useCallback } from "react";
 import { debounce } from "lodash";
 
-const Editor = () => {
+const Test = () => {
+  // const [allData,setAllData] = useState([]);
+
   const footerHeader = localStorage.getItem("content");
   const parsefooterheader = JSON.parse(footerHeader);
 
@@ -23,13 +23,13 @@ const Editor = () => {
 
   const [question, setQuestion] = useState([]);
   const [answer, setAnswer] = useState([]);
- 
- const [data, setData] = useState({
+  const [data, setData] = useState({
     Header: parsefooterheader.header,
     Question: "",
     Answer: "",
     Footer: parsefooterheader.footer,
   });
+
   const handleSubmit = () =>
     setData((prevdata) => ({
       ...prevdata,
@@ -47,18 +47,20 @@ const Editor = () => {
   const debouncedSetAnswer = useCallback(
     debounce((newAnswer) => {
       setAnswer((prev) => [...prev, newAnswer]);
-    }, 1500),
+    }, 1000),
     []
   );
 
   const debouncedSetQuestion = useCallback(
     debounce((newQuestion) => {
       setQuestion((prev) => [...prev, newQuestion]);
-    }, 1500),
+    }, 1000),
     []
   );
+
+  // console.log(question);
   console.log(data);
-  
+
   return (
     <>
       <Formik
@@ -74,7 +76,6 @@ const Editor = () => {
                     values.Question.map((Question, index) => (
                       <div key={index}>
                         <CKEditor
-                        label
                           editor={ClassicEditor}
                           config={{
                             plugins: [Essentials, Bold, Italic, Paragraph],
@@ -86,54 +87,41 @@ const Editor = () => {
                               "bold",
                               "italic",
                             ],
-                            allowedContent: false,
                           }}
+                          // onChange={(event, editor) => {
+                          //   const quesdata = editor.getData();
+
+                          //   setQuestion((prev) => [
+                          //     ...prev,
+                          //     quesdata,
+                          //   ]);
+                          // }}
+
                           onChange={(event, editor) => {
                             const quesdata = editor.getData();
-                            const questext = quesdata.replace(/<\/?[^>]+(>|$)/g, ""); 
-                            debouncedSetQuestion(questext);
-                          }}
-                        />
-                        <CKEditor
-                          editor={ClassicEditor}
-                          config={{
-                            plugins: [Essentials, Bold, Italic, Paragraph],
-                            toolbar: [
-                              "heading",
-                              "undo",
-                              "redo",
-                              "|",
-                              "bold",
-                              "italic",
 
-                            ],
-                            allowedContent: false,
-                          }}
-                          onChange={(event, editor) => {
-                            const ansdata = editor.getData();
-                            const plainText = ansdata.replace(/<\/?[^>]+(>|$)/g, ""); 
-                            debouncedSetAnswer(plainText);
+                            debouncedSetQuestion(quesdata);
                           }}
                         />
                         <button
                           type="button"
                           onClick={() => arrayHelpers.insert(index, "")}
                         >
-                          Add another Query-Answer
+                          Add another Question
                         </button>
                       </div>
                     ))
                   ) : (
                     <button type="button" onClick={() => arrayHelpers.push("")}>
-                      Add Query-Answer
+                      Add a Question
                     </button>
                   )}
 
-                  <div>
-                    <button type="submit" onClick={handleSubmit}>
-                      Submit
+                  {/* <div>
+                    <button type="submit" onClick={submitQuestion}>
+                      Submit Question
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               )}
             />
@@ -141,7 +129,7 @@ const Editor = () => {
         )}
       ></Formik>
 
-      {/* <Formik
+      <Formik
         initialValues={{ Answer: [] }}
         onSubmit={() => {}}
         render={({ values }) => (
@@ -171,7 +159,12 @@ const Editor = () => {
                             debouncedSetAnswer(ansdata);
                           }}
                         />
-                       
+                        <button
+                          type="button"
+                          onClick={() => arrayHelpers.insert(index, "")}
+                        >
+                          Add another Answer
+                        </button>
                       </div>
                     ))
                   ) : (
@@ -196,12 +189,9 @@ const Editor = () => {
             />
           </Form>
         )}
-      ></Formik> */}
-
-
-
+      ></Formik>
     </>
   );
 };
 
-export default Editor;
+export default Test;
