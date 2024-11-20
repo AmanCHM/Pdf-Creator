@@ -14,7 +14,7 @@ import {
   Title,
   FontSize,
 } from "ckeditor5";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import "./Validation.css";
 
 const Validation = () => {
@@ -42,6 +42,8 @@ const Validation = () => {
     },
   });
 
+  console.log(localStorage);
+  // console.log('foromdata:',localStorage.removeItem("formData"));
   return (
     <>  
     <label htmlFor="">Validation Form</label>
@@ -58,7 +60,7 @@ const Validation = () => {
           onChange={formik.handleChange}
         />
         {formik.touched.email && formik.errors.email ? (
-          <div>{formik.errors.email}</div>
+          <div style={{ color: 'red' }}>{formik.errors.email}</div>
         ) : null}
 
         <label htmlFor="name">Name</label>
@@ -71,14 +73,14 @@ const Validation = () => {
           onChange={formik.handleChange}
         />
         {formik.touched.Name && formik.errors.Name ? (
-          <div>{formik.errors.Name}</div>
+          <div style={{ color: 'red' }}>{formik.errors.Name}</div>
         ) : null}
 
         <label>Header</label>
         <CKEditor
           editor={ClassicEditor}
           config={{
-            plugins: [Title, Essentials, Bold, Italic, Paragraph],
+            plugins: [Essentials, Bold, Italic, Paragraph],
             toolbar: ["heading", "undo", "redo", "|", "bold", "italic"],
           }}
           data={formik.values.header}
@@ -88,14 +90,14 @@ const Validation = () => {
           }}
         />
         {formik.touched.header && formik.errors.header ? (
-          <div>{formik.errors.header}</div>
+          <div style={{ color: 'red' }}>{formik.errors.header}</div>
         ) : null}
 
         <label>Footer</label>
         <CKEditor
           editor={ClassicEditor}
           config={{
-            plugins: [Title, Essentials, Bold, Italic, Paragraph],
+            plugins: [ Essentials, Bold, Italic, Paragraph],
             toolbar: ["heading", "undo", "redo", "|", "bold", "italic"],
           }}
           data={formik.values.footer}
@@ -106,7 +108,7 @@ const Validation = () => {
           }}
         />
         {formik.touched.footer && formik.errors.footer ? (
-          <div>{formik.errors.footer}</div>
+          <div style={{ color: 'red' }}>{formik.errors.footer}</div>
         ) : null}
 
         <button type="submit" className="submit-button">Next</button>

@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background:white; /* Gradient background */
+    background:white; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,27 +9,27 @@ body {
   }
   
   form {
-    width: 550px; /* Form width */
-    padding: 20px; /* Padding around form */
+    width: 550px; 
+    padding: 20px; 
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: white;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Space between form elements */
+    gap: 15px; 
   }
   
   label {
     font-weight: bold;
     color: #333;
     margin-bottom: 5px;
-    font-size: 18px; /* Enlarged label text */
+    font-size: 18px; 
   }
   
   input {
     width: 100%;
-    padding: 10px; /* Input padding */
+    padding: 10px; 
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
@@ -53,14 +53,14 @@ body {
   }
   
   .ck-editor__editable_inline {
-    min-height: 80px; /* Reduced CKEditor height */
+    min-height: 80px; 
     font-size: 14px;
-    padding: 5px; /* Add slight padding for content */
+    padding: 5px; 
   }
   
   .submit-button {
     margin-top: 15px;
-    padding: 10px; /* Button padding */
+    padding: 10px; 
     font-size: 16px;
     background-color: #007bff;
     color: #fff;

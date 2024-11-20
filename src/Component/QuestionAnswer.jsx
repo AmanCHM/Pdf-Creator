@@ -12,16 +12,15 @@ import React, { useState } from "react";
 import { exportToExcel } from "react-json-to-excel";
 import * as Yup from "yup";
 import jsPDF from "jspdf";
-
-import html2pdf from 'html2pdf.js';
-
+import "./Validation.css";
+import html2pdf from "html2pdf.js";
 
 const QuestionAnswer = () => {
   const [allData, setAllData] = useState([]);
 
-const headerData = localStorage.formData;
-const footerheader = JSON.parse(headerData);
-console.log(footerheader);
+  const headerData = localStorage.formData;
+  const footerheader = JSON.parse(headerData);
+  console.log(footerheader);
 
   const handleSubmit = (values) => {
     const formattedData = values.Question.map((item) => ({
@@ -31,84 +30,81 @@ console.log(footerheader);
     setAllData(formattedData);
     // console.log("Qustion Data=", formattedData);
     // console.log("localdata=",localStorage.formData);
+  //  localStorage.removeItem("formData");
   };
 
-  console.log("alldata:",allData);
+  console.log(localStorage);
+  console.log("alldata:", allData);
 
-
-  const pdf = new jsPDF();
-
-  const downloadPDF = () => {
-    pdf.text(JSON.stringify(allData), 10, 10, { align: "center" });
-    pdf.save("answer.pdf");
-  };
-
-
-  const listItems = allData.map(item => (
-    <li key={item.id}>
-      <p>
-        <b>{item.question}:</b>
-            {item.answer}
-      </p>
-    </li>
-  ));
-  
-
+  // const listItems = allData.map((item) => (
+  //   <li key={item.id}>
+  //     <p>
+  //       <b>{item.question}:</b>
+  //       {item.answer}
+  //     </p>
+  //   </li>
+  // ));
 
   const exportHtmlToPDF = () => {
-    // Create a temporary container to hold the combined HTML content
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = footerheader.header + '<br/>'
-footerheader
-    // Loop through the array and combine the HTML content for each item
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = footerheader.header + "<br/>";
+    footerheader;
+
     allData.forEach((item, index) => {
-      const itemDiv = document.createElement('div');
-      
-      // Combine Header, Question, Answer, and Footer into one div
+      const itemDiv = document.createElement("div");
+
       itemDiv.innerHTML = `
-        ${item.Header ? item.Header : ''}
+        ${item.Header ? item.Header : ""}
         <p><b>Question:</b> ${item.question}</p>
         <p><b>Answer:</b> ${item.answer}</p>
-        ${item.Footer ? item.Footer : ''}
+        ${item.Footer ? item.Footer : ""}
       `;
-      
       tempDiv.appendChild(itemDiv);
     });
-    tempDiv.innerHTML += '<br/>'+footerheader.footer + '<br/>'
-    // Ensure that tempDiv has content before generating the PDF
-    if (tempDiv.innerHTML.trim() === '') {
-      console.error('No content to export!');
+    tempDiv.innerHTML += "<br/>" + footerheader.footer + "<br/>";
+    if (tempDiv.innerHTML.trim() === "") {
+      console.error("No content to export!");
       return;
     }
-
-    // Use html2pdf.js to generate and download the PDF
     html2pdf()
       .set({
         margin: 1,
-        filename: 'ExportedContent.pdf',
+        filename: "ExportedContent.pdf",
         html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
       })
       .from(tempDiv)
       .save();
-  };
+    };
+  
+
+   
 
   return (
     <>
-    <label htmlFor=""> Enter your Answer and Question</label>
+      <label htmlFor=""> Enter your Answer and Question</label>
       <Formik
         initialValues={{ Question: [{ question: "", answer: "" }] }}
-        
         onSubmit={handleSubmit}
+        validationSchema={Yup.object().shape({
+          Question: Yup.array()
+            .of(
+              Yup.object().shape({
+                question: Yup.string().required("Question Required"),
+                answer: Yup.string().required("Answer Required"),
+              })
+            )
+            .required("Required field"),
+        })}
       >
-        {({ values }) => (
+        {({ values, errors, touched }) => (
           <Form>
             <FieldArray
               name="Question"
               render={(arrayHelpers) => (
                 <div>
                   {values.Question.map((item, index) => (
-                    <div key={index}>
+                    <div key={index} style={{ border:"solid",borderColor:"#bdd3e4",gap: "20px" }}>
                       <label> Question:{index + 1}</label>
                       <CKEditor
                         editor={ClassicEditor}
@@ -135,7 +131,13 @@ footerheader
                           });
                         }}
                       />
-                     
+                      {touched.Question?.[index]?.question &&
+                        errors.Question?.[index]?.question && (
+                          <div style={{ color: "red" }}>
+                            {errors.Question[index].question}
+                          </div>
+                        )}
+
                       <label> Answer:{index + 1}</label>
                       <CKEditor
                         editor={ClassicEditor}
@@ -163,16 +165,48 @@ footerheader
                           });
                         }}
                       />
+                      {touched.Question?.[index]?.answer &&
+                        errors.Question?.[index]?.answer && (
+                          <div style={{ color: "red" }}>
+                            {errors.Question[index].answer}
+                          </div>
+                        )}
+
+
+                     
+                    {
                       
-                      <button
+     
+                        values.Question.length> 1 ? (
+                          <button
                         type="button"
                         className="submit-button"
                         onClick={() => arrayHelpers.remove(index)}
+                        // disabled={values.Question.length ==0}
                       >
                         Remove
                       </button>
+                        ) : (null)
+                      
+                    }
+
+
+           
+
+                      {/* <button
+                        type="button"
+                        className="submit-button"
+                        onClick={() => arrayHelpers.remove(index)}
+                        disabled={values.Question.length <= 1}
+                      >
+                        Remove
+                      </button> */}
+
+                      <br style={{ color: "red" }}/>
                     </div>
+                                    
                   ))}
+                  
                   <button
                     type="button"
                     className="submit-button"
@@ -191,49 +225,49 @@ footerheader
                   <button
                     onClick={() => exportToExcel(allData, "data")}
                     className="submit-button"
+                    disabled={allData.length == 0}
                   >
                     Download Excel
                   </button>
-                  <div>
-                    <button type="submit" onClick={downloadPDF}
-                    className="submit-button">
-                      Dowwnload PDF
-                    </button>
-                  </div>
                 </div>
               )}
             />
 
-    
-{allData && allData.length > 0 ? (
-        allData.map((item, index) => (
-          <div key={index}>
-            <div dangerouslySetInnerHTML={{ __html: item.Header }}></div>
-            <div>
-              <p><b>Question:</b> {item.question}</p>
-              <p><b>Answer:</b> {item.answer}</p>
-            </div>
+            {allData && allData.length > 0 ? (
+              allData.map((item, index) => (
+                <div key={index}>
+                  <div >{item.header}</div>
+                  <div>
+                    <p>
+                      <b>Question:</b> {item.question}
+                    </p>
+                    <p>
+                      <b>Answer:</b> {item.answer}
+                    </p>
+                  </div>
 
-            <div dangerouslySetInnerHTML={{ __html: item.Footer }}></div>
-          </div>
-        ))
-      ) : (
-        <p>No data available to display.</p>
-      )}
+                  <div>{item.footer}</div>
+                </div>
+              ))
+            ) : (
+              <p>No data available to display.</p>
+            )}
 
-      <button onClick={exportHtmlToPDF} className="submit-button">
-        Export to PDF
-      </button>
-
-
+            <button
+              onClick={exportHtmlToPDF}
+              className="submit-button"
+              disabled={allData.length == 0}
+            >
+              Export to PDF
+            </button>
           </Form>
         )}
+        
       </Formik>
-    
 
-
-      <h2>Question and Answer</h2>
-      <ul> {listItems}</ul>
+      {/* <h2>Question and Answer</h2>
+      <ul> {listItems}</ul> */}
+     
     </>
   );
 };
