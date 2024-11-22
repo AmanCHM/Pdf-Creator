@@ -17,7 +17,7 @@ import html2pdf from "html2pdf.js";
 
 const QuestionAnswer = () => {
   const [allData, setAllData] = useState([]);
-
+ const [add ,setAdd] = useState(false)
   const headerData = localStorage.formData;
   const footerheader = JSON.parse(headerData);
   console.log(footerheader);
@@ -28,9 +28,8 @@ const QuestionAnswer = () => {
       answer: item.answer,
     }));
     setAllData(formattedData);
-    // console.log("Qustion Data=", formattedData);
-    // console.log("localdata=",localStorage.formData);
-  //  localStorage.removeItem("formData");
+    setAdd(true);
+    
   };
 
   console.log(localStorage);
@@ -45,7 +44,13 @@ const QuestionAnswer = () => {
   //   </li>
   // ));
 
+
+
+ 
+    // localStorage.removeItem("formData");
+ 
   const exportHtmlToPDF = () => {
+    
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = footerheader.header + "<br/>";
     footerheader;
@@ -65,6 +70,9 @@ const QuestionAnswer = () => {
     if (tempDiv.innerHTML.trim() === "") {
       console.error("No content to export!");
       return;
+     
+     
+
     }
     html2pdf()
       .set({
@@ -75,6 +83,9 @@ const QuestionAnswer = () => {
       })
       .from(tempDiv)
       .save();
+
+
+      // localStorage.removeItem("formData")
     };
   
 
@@ -84,8 +95,10 @@ const QuestionAnswer = () => {
     <>
       <label htmlFor=""> Enter your Answer and Question</label>
       <Formik
-        initialValues={{ Question: [{ question: "", answer: "" }] }}
+         
+        initialValues={{ Question: [ { question: "", answer: "" }] }}
         onSubmit={handleSubmit}
+        enableReinitialize={true}
         validationSchema={Yup.object().shape({
           Question: Yup.array()
             .of(
@@ -103,14 +116,15 @@ const QuestionAnswer = () => {
               name="Question"
               render={(arrayHelpers) => (
                 <div>
-                  {values.Question.map((item, index) => (
-                    <div key={index} style={{ border:"solid",borderColor:"#bdd3e4",gap: "20px" }}>
-                      <label> Question:{index + 1}</label>
+                  {values.Question.map((item,index) => (
+                    <div key={item.id || index} style={{ border:"solid",borderColor:"#bdd3e4",gap: "20px" }}>
+                    <label> Question </label>
                       <CKEditor
                         editor={ClassicEditor}
                         config={{
                           plugins: [Essentials, Bold, Italic, Paragraph],
                           toolbar: [
+                         
                             "heading",
                             "undo",
                             "redo",
@@ -138,12 +152,13 @@ const QuestionAnswer = () => {
                           </div>
                         )}
 
-                      <label> Answer:{index + 1}</label>
+                      <label> Answer:</label>
                       <CKEditor
                         editor={ClassicEditor}
                         config={{
                           plugins: [Essentials, Bold, Italic, Paragraph],
                           toolbar: [
+                         
                             "heading",
                             "undo",
                             "redo",
@@ -175,23 +190,24 @@ const QuestionAnswer = () => {
 
                      
                     {
-                      
      
                         values.Question.length> 1 ? (
                           <button
                         type="button"
-                        className="submit-button"
-                        onClick={() => arrayHelpers.remove(index)}
-                        // disabled={values.Question.length ==0}
+                        className="remove-button"
+                        onClick={() => {
+                          // debugger;
+                          arrayHelpers.remove(index)
+                        }}
+                         disabled={ add==true}
+
+                         
                       >
                         Remove
                       </button>
-                        ) : (null)
+                        ) : null  
                       
                     }
-
-
-           
 
                       {/* <button
                         type="button"
@@ -202,7 +218,7 @@ const QuestionAnswer = () => {
                         Remove
                       </button> */}
 
-                      <br style={{ color: "red" }}/>
+                     
                     </div>
                                     
                   ))}
@@ -210,9 +226,11 @@ const QuestionAnswer = () => {
                   <button
                     type="button"
                     className="submit-button"
-                    onClick={() =>
-                      arrayHelpers.push({ question: "", answer: "" })
-                    }
+                    onClick={() => {
+                      arrayHelpers.push({ id: `${Date.now()}`, question: "", answer: "" });
+                    }}
+
+                    disabled={add==true}
                   >
                     Add
                   </button>
@@ -222,13 +240,13 @@ const QuestionAnswer = () => {
                     </button>
                   </div>
 
-                  <button
+                  {/* <button
                     onClick={() => exportToExcel(allData, "data")}
                     className="submit-button"
                     disabled={allData.length == 0}
                   >
                     Download Excel
-                  </button>
+                  </button> */}
                 </div>
               )}
             />
@@ -252,6 +270,13 @@ const QuestionAnswer = () => {
             ) : (
               <p>No data available to display.</p>
             )}
+              <button
+                    onClick={() => exportToExcel(allData, "data")}
+                    className="submit-button"
+                    disabled={allData.length == 0 ||add ==false}
+                  >
+                    Download Excel
+                  </button>
 
             <button
               onClick={exportHtmlToPDF}

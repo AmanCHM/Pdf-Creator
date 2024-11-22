@@ -28,8 +28,12 @@ const Validation = () => {
     validationSchema: Yup.object({
       Name: Yup.string()
         .max(15, "Must be 15 characters or less")
+        .trim()
         .required("Required"),
-      email: Yup.string().email("Invalid email address").required("Required"),
+      email: Yup.string()
+      .email("Invalid email address")
+      .required("Required"),
+  
       header: Yup.string().required("Header cannot be blank"),
       footer: Yup.string().required("Footer cannot be blank"),
     }),
