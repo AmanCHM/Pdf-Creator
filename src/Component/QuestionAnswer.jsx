@@ -17,7 +17,7 @@ import html2pdf from "html2pdf.js";
 
 const QuestionAnswer = () => {
   const [allData, setAllData] = useState([]);
-
+ const [add ,setAdd] = useState(false)
   const headerData = localStorage.formData;
   const footerheader = JSON.parse(headerData);
   console.log(footerheader);
@@ -28,9 +28,8 @@ const QuestionAnswer = () => {
       answer: item.answer,
     }));
     setAllData(formattedData);
-    // console.log("Qustion Data=", formattedData);
-    // console.log("localdata=",localStorage.formData);
-  //  localStorage.removeItem("formData");
+    setAdd(true);
+    
   };
 
   console.log(localStorage);
@@ -125,6 +124,7 @@ const QuestionAnswer = () => {
                         config={{
                           plugins: [Essentials, Bold, Italic, Paragraph],
                           toolbar: [
+                         
                             "heading",
                             "undo",
                             "redo",
@@ -158,6 +158,7 @@ const QuestionAnswer = () => {
                         config={{
                           plugins: [Essentials, Bold, Italic, Paragraph],
                           toolbar: [
+                         
                             "heading",
                             "undo",
                             "redo",
@@ -193,12 +194,14 @@ const QuestionAnswer = () => {
                         values.Question.length> 1 ? (
                           <button
                         type="button"
-                        className="submit-button"
+                        className="remove-button"
                         onClick={() => {
                           // debugger;
                           arrayHelpers.remove(index)
                         }}
-                        // disabled={values.Question.length ==0}
+                         disabled={ add==true}
+
+                         
                       >
                         Remove
                       </button>
@@ -224,8 +227,10 @@ const QuestionAnswer = () => {
                     type="button"
                     className="submit-button"
                     onClick={() => {
-                      arrayHelpers.push({ id: `q${Date.now()}`, question: "", answer: "" });
+                      arrayHelpers.push({ id: `${Date.now()}`, question: "", answer: "" });
                     }}
+
+                    disabled={add==true}
                   >
                     Add
                   </button>
@@ -235,13 +240,13 @@ const QuestionAnswer = () => {
                     </button>
                   </div>
 
-                  <button
+                  {/* <button
                     onClick={() => exportToExcel(allData, "data")}
                     className="submit-button"
                     disabled={allData.length == 0}
                   >
                     Download Excel
-                  </button>
+                  </button> */}
                 </div>
               )}
             />
@@ -265,6 +270,13 @@ const QuestionAnswer = () => {
             ) : (
               <p>No data available to display.</p>
             )}
+              <button
+                    onClick={() => exportToExcel(allData, "data")}
+                    className="submit-button"
+                    disabled={allData.length == 0 ||add ==false}
+                  >
+                    Download Excel
+                  </button>
 
             <button
               onClick={exportHtmlToPDF}
