@@ -46,7 +46,7 @@ const Validation = () => {
     },
   });
 
-  console.log(localStorage);
+  // console.log(localStorage);
   // console.log('foromdata:',localStorage.removeItem("formData"));
   return (
     <>  
