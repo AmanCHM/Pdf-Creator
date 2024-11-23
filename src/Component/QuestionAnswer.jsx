@@ -11,7 +11,6 @@ import { CKEditor, CKEditorContext } from "@ckeditor/ckeditor5-react";
 import React, { useState } from "react";
 import { exportToExcel } from "react-json-to-excel";
 import * as Yup from "yup";
-import jsPDF from "jspdf";
 import "./Validation.css";
 import html2pdf from "html2pdf.js";
 
@@ -35,20 +34,7 @@ const QuestionAnswer = () => {
   console.log(localStorage);
   console.log("alldata:", allData);
 
-  // const listItems = allData.map((item) => (
-  //   <li key={item.id}>
-  //     <p>
-  //       <b>{item.question}:</b>
-  //       {item.answer}
-  //     </p>
-  //   </li>
-  // ));
 
-
-
- 
-    // localStorage.removeItem("formData");
- 
   const exportHtmlToPDF = () => {
     
     const tempDiv = document.createElement("div");
@@ -85,11 +71,8 @@ const QuestionAnswer = () => {
       .save();
 
 
-      // localStorage.removeItem("formData")
     };
   
-
-   
 
   return (
     <>
@@ -209,14 +192,7 @@ const QuestionAnswer = () => {
                       
                     }
 
-                      {/* <button
-                        type="button"
-                        className="submit-button"
-                        onClick={() => arrayHelpers.remove(index)}
-                        disabled={values.Question.length <= 1}
-                      >
-                        Remove
-                      </button> */}
+                   
 
                      
                     </div>
@@ -240,13 +216,7 @@ const QuestionAnswer = () => {
                     </button>
                   </div>
 
-                  {/* <button
-                    onClick={() => exportToExcel(allData, "data")}
-                    className="submit-button"
-                    disabled={allData.length == 0}
-                  >
-                    Download Excel
-                  </button> */}
+               
                 </div>
               )}
             />
@@ -290,9 +260,6 @@ const QuestionAnswer = () => {
         
       </Formik>
 
-      {/* <h2>Question and Answer</h2>
-      <ul> {listItems}</ul> */}
-     
     </>
   );
 };
