@@ -88,6 +88,10 @@ const Validation = () => {
         <label>Header</label>
         <CKEditor
           editor={ClassicEditor}
+          config={{
+            plugins: [ Essentials, Bold, Italic, Paragraph],
+            toolbar: ["heading", "undo", "redo", "|", "bold", "italic"],
+          }}
           data={formik.values.header}
           onChange={(event, editor) => {
             const data = editor.getData();
@@ -104,6 +108,10 @@ const Validation = () => {
         <label>Footer</label>
         <CKEditor
           editor={ClassicEditor}
+          config={{
+            plugins: [ Essentials, Bold, Italic, Paragraph],
+            toolbar: ["heading", "undo", "redo", "|", "bold", "italic"],
+          }}
           data={formik.values.footer}
           onChange={(event, editor) => {
             const data = editor.getData();
