@@ -31,8 +31,8 @@ const QuestionAnswer = () => {
     
   };
 
-  console.log(localStorage);
-  console.log("alldata:", allData);
+  // console.log(localStorage);
+  // console.log("alldata:", allData);
 
 
   const exportHtmlToPDF = () => {
@@ -73,7 +73,7 @@ const QuestionAnswer = () => {
 
     };
   
-
+   let count =1
   return (
     <>
       <label htmlFor=""> Enter your Answer and Question</label>
@@ -100,7 +100,7 @@ const QuestionAnswer = () => {
               render={(arrayHelpers) => (
                 <div>
                   {values.Question.map((item,index) => (
-                    <div key={item.id || index} style={{ border:"solid",borderColor:"#bdd3e4",gap: "20px" }}>
+                    <div key={item.id} style={{ border:"solid",borderColor:"#bdd3e4",gap: "20px" }}>
                     <label> Question </label>
                       <CKEditor
                         editor={ClassicEditor}
@@ -200,7 +200,7 @@ const QuestionAnswer = () => {
                     type="button"
                     className="submit-button"
                     onClick={() => {
-                      arrayHelpers.push({ id: `${Date.now()}`, question: "", answer: "" });
+                      arrayHelpers.push({ id: count++, question: "", answer: "" });
                     }}
 
                     disabled={add==true}

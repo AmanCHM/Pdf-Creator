@@ -92,8 +92,15 @@ body {
     cursor: pointer;
     
   }
+   .ck-body-wrapper{
+   display: none;
+   }
+
+   .ck.ck-label.ck-voice-label{
+    display: none;
+   }
+
   
- 
   .ck.ck-button:not(.ck-disabled):hover {
     background-color: #0056b3; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
