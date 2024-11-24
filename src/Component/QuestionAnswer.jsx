@@ -191,10 +191,7 @@ const QuestionAnswer = () => {
                         ) : null  
                       
                     }
-
-                   
-
-                     
+                       
                     </div>
                                     
                   ))}
