@@ -22,6 +22,8 @@ const Validation = () => {
 
   const formik = useFormik({
     initialValues: {
+      Name: "",
+      email: "",
       header: "",
       footer: "",
     },
@@ -46,76 +48,81 @@ const Validation = () => {
     },
   });
 
-  // console.log(localStorage);
-  // console.log('foromdata:',localStorage.removeItem("formData"));
   return (
-    <>  
-    <label htmlFor="">Validation Form</label>
-        
+<>
+      <h1 >Validation Form</h1>
       <form onSubmit={formik.handleSubmit}>
-        
+
         <label htmlFor="email">Email</label>
         <input
           id="email"
           name="email"
           type="email"
-          placeholder="abc@gmail.com"
-          // value={formik.values.email}
+          placeholder="Enter your email"
+          value={formik.values.email}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
         {formik.touched.email && formik.errors.email ? (
-          <div style={{ color: 'red' }}>{formik.errors.email}</div>
+          <div style={{ color: "red", marginBottom: "10px" }}>
+            {formik.errors.email}
+          </div>
         ) : null}
-
-        <label htmlFor="name">Name</label>
+       
+       <label htmlFor="Name">Name</label>
         <input
           id="Name"
           name="Name"
           type="text"
-          placeholder="Name"
-          // value={formik.values.Name}
+          placeholder="Enter your name"
+          value={formik.values.Name}
           onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
         />
         {formik.touched.Name && formik.errors.Name ? (
-          <div style={{ color: 'red' }}>{formik.errors.Name}</div>
+          <div style={{ color: "red", marginBottom: "10px" }}>
+            {formik.errors.Name}
+          </div>
         ) : null}
 
         <label>Header</label>
         <CKEditor
           editor={ClassicEditor}
-          config={{
-            plugins: [Essentials, Bold, Italic, Paragraph],
-            toolbar: ["heading", "undo", "redo", "|", "bold", "italic"],
-          }}
           data={formik.values.header}
           onChange={(event, editor) => {
             const data = editor.getData();
             formik.setFieldValue("header", data);
           }}
+          onBlur={() => formik.setTouched({ ...formik.touched, header: true })}
         />
         {formik.touched.header && formik.errors.header ? (
-          <div style={{ color: 'red' }}>{formik.errors.header}</div>
+          <div style={{ color: "red", marginBottom: "10px" }}>
+            {formik.errors.header}
+          </div>
         ) : null}
 
         <label>Footer</label>
         <CKEditor
           editor={ClassicEditor}
-          config={{
-            plugins: [ Essentials, Bold, Italic, Paragraph],
-            toolbar: ["heading", "undo", "redo", "|", "bold", "italic"],
-          }}
           data={formik.values.footer}
           onChange={(event, editor) => {
-            const adata = editor.getData();
-           
-            formik.setFieldValue("footer", adata);
+            const data = editor.getData();
+            formik.setFieldValue("footer", data);
           }}
+          onBlur={() => formik.setTouched({ ...formik.touched, footer: true })}
         />
         {formik.touched.footer && formik.errors.footer ? (
-          <div style={{ color: 'red' }}>{formik.errors.footer}</div>
+          <div style={{ color: "red", marginBottom: "10px" }}>
+            {formik.errors.footer}
+          </div>
         ) : null}
 
-        <button type="submit" className="submit-button">Next</button>
+        {/* Submit Button */}
+        <button
+          type="submit" className="submit-button"
+        >
+          Next
+        </button>
       </form>
     </>
   );
