@@ -89,6 +89,10 @@ const QuestionAnswer = () => {
 
 
     };
+
+    const handleEdit = ()=>{
+      setAdd(false);
+    }
   
    let count =1
   return (
@@ -118,7 +122,7 @@ const QuestionAnswer = () => {
                 <div>
                   {values.Question.map((item,index) => (
                     <div key={item.id} style={{ border:"solid",borderColor:"#bdd3e4",gap: "20px" }}>
-                    <label> Question </label>
+                    <label> Question : </label>
                       <CKEditor
                         editor={ClassicEditor}
                         config={{
@@ -152,7 +156,7 @@ const QuestionAnswer = () => {
                           </div>
                         )}
 
-                      <label> Answer:</label>
+                      <label> Answer: </label>
                       <CKEditor
                         editor={ClassicEditor}
                         config={{
@@ -225,11 +229,19 @@ const QuestionAnswer = () => {
                     Add
                   </button>
                   <div>
-                    <button type="submit" className="submit-button">
+                    <button type="submit" className="submit-button"
+                     disabled={add==true}>
                       Submit
                     </button>
                   </div>
-
+                  <div>
+                    <button type="submit" className="submit-button"
+                     disabled={add==false}
+                     onClick={handleEdit}
+                     >
+                      Edit
+                    </button>
+                  </div>
                
                 </div>
               )}
@@ -237,22 +249,23 @@ const QuestionAnswer = () => {
 
             {allData && allData.length > 0 ? (
               allData.map((item, index) => (
-                <div key={index}>
-                  <div >{item.header}</div>
-                  <div>
+                <div key={item.id}>
+                  <div ><h1>{item.header}</h1></div>
+                  <div style={{ wordBreak: "break-all" }}>
+
                     <p>
-                      <b>Question:</b> {item.question}
+                      <b>Question:{index+1}</b> {item.question}
                     </p>
                     <p>
-                      <b>Answer:</b> {item.answer}
+                      <b>Answer:{index+1}</b> {item.answer}
                     </p>
                   </div>
 
-                  <div>{item.footer}</div>
+                  <div><small>{item.footer}</small></div>
                 </div>
               ))
             ) : (
-              <p>No data available to display.</p>
+              <p></p>
             )}
               <button
                     onClick={() => exportToExcel(allData, "data")}
@@ -265,7 +278,7 @@ const QuestionAnswer = () => {
             <button
               onClick={exportHtmlToPDF}
               className="submit-button"
-              disabled={allData.length == 0}
+              disabled={allData.length == 0||add ==false}
             >
               Export to PDF
             </button>

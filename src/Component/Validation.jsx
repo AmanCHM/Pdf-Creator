@@ -30,11 +30,12 @@ const Validation = () => {
     validationSchema: Yup.object({
       Name: Yup.string()
         .max(15, "Must be 15 characters or less")
+        .matches(/^[A-Za-z\s]+$/, 'Only alphabets are allowed')
         .trim()
-        .required("Required"),
+        .required("Name is Required"),
       email: Yup.string()
       .email("Invalid email address")
-      .required("Required"),
+      .required("Email is Required"),
   
       header: Yup.string().required("Header cannot be blank"),
       footer: Yup.string().required("Footer cannot be blank"),
@@ -47,6 +48,14 @@ const Validation = () => {
       navigate("/question");
     },
   });
+
+  useEffect(() => {
+    const savedFormData = localStorage.getItem("formData");
+    if (savedFormData) {
+      const parsedData = JSON.parse(savedFormData);
+      formik.setValues(parsedData); 
+    }
+  }, []);
 
   return (
 <>
