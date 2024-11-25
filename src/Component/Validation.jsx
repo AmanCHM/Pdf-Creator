@@ -55,8 +55,12 @@ const Validation = () => {
       const parsedData = JSON.parse(savedFormData);
       formik.setValues(parsedData); 
     }
+    // return ()=>{
+    //   localStorage.removeItem("formData")
+    // }
   }, []);
 
+  // console.log(localStorage);
   return (
 <>
       <h1 >Validation Form</h1>

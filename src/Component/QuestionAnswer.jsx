@@ -8,7 +8,7 @@ import {
   Paragraph,
 } from "ckeditor5";
 import { CKEditor, CKEditorContext } from "@ckeditor/ckeditor5-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { exportToExcel } from "react-json-to-excel";
 import * as Yup from "yup";
 import "./Validation.css";
@@ -17,6 +17,7 @@ import html2pdf from "html2pdf.js";
 const QuestionAnswer = () => {
   const [allData, setAllData] = useState([]);
  const [add ,setAdd] = useState(false)
+ const [localData,setLocalData]= useState(false)
   const headerData = localStorage.formData;
   const footerheader = JSON.parse(headerData);
   console.log(footerheader);
@@ -31,7 +32,7 @@ const QuestionAnswer = () => {
     
   };
 
-  console.log(localStorage);
+  // console.log(localStorage);
   // console.log("alldata:", allData);
 
 
@@ -87,13 +88,20 @@ const QuestionAnswer = () => {
       .from(tempDiv)
       .save();
 
-
+    
     };
 
     const handleEdit = ()=>{
       setAdd(false);
     }
   
+    // const handleReset = ()=>{
+    //   setAdd([])
+     
+     
+    // }
+
+
    let count =1
   return (
     <>
@@ -276,12 +284,20 @@ const QuestionAnswer = () => {
                   </button>
 
             <button
-              onClick={exportHtmlToPDF}
+              onClick={exportHtmlToPDF }
               className="submit-button"
               disabled={allData.length == 0||add ==false}
             >
               Export to PDF
             </button>
+{/* 
+            <button
+              onClick={handleReset}
+              className="submit-button"
+              disabled={allData.length == 0}
+            >
+              Reset
+            </button> */}
           </Form>
         )}
         

@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { HashRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import React from "react";
+import React, { useEffect } from "react";
 
 import Validation from "./Component/Validation";
 
@@ -14,6 +14,15 @@ const App = () => {
     return isLocalStoragePresent?<QuestionAnswer/>: <Navigate to="/" />
    
   }
+  useEffect(() => {
+
+    console.log("before");
+    return ()=>{
+      localStorage.removeItem("formData")
+      console.log("after");
+    }
+  }, []);
+  
   return (
     <Router>
       <Routes>
