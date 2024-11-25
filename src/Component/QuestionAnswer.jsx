@@ -31,14 +31,26 @@ const QuestionAnswer = () => {
     
   };
 
-  // console.log(localStorage);
+  console.log(localStorage);
   // console.log("alldata:", allData);
 
 
   const exportHtmlToPDF = () => {
     
     const tempDiv = document.createElement("div");
-    tempDiv.innerHTML = footerheader.header + "<br/>";
+    tempDiv.innerHTML = `
+    <h1 style="
+      text-align: center;
+      font-size: 24px;
+      color: black;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 10px;
+    ">
+      ${footerheader.header || "Default Header"}
+    </h1>
+    <br/>
+  `;
     footerheader;
 
     allData.forEach((item, index) => {
@@ -52,7 +64,12 @@ const QuestionAnswer = () => {
       `;
       tempDiv.appendChild(itemDiv);
     });
-    tempDiv.innerHTML += "<br/>" + footerheader.footer + "<br/>";
+    tempDiv.innerHTML += `
+    <div style="text-align: center; margin-bottom: 25px; background-color: #f1f1f1; padding: 10px; font-size: 14px; color: #333;  border-top: 1px solid #ddd;">
+      <small>${footerheader.footer || "Default Footer"}</small>
+    </div>
+    <br/>
+  `;
     if (tempDiv.innerHTML.trim() === "") {
       console.error("No content to export!");
       return;
