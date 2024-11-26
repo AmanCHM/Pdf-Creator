@@ -16,10 +16,10 @@ const App = () => {
   }
   useEffect(() => {
 
-    console.log("before");
+    
     return ()=>{
       localStorage.removeItem("formData")
-      console.log("after");
+    
     }
   }, []);
   
