@@ -14,13 +14,17 @@ const App = () => {
     return isLocalStoragePresent?<QuestionAnswer/>: <Navigate to="/" />
    
   }
-  useEffect(() => {
+ useEffect(() => {
+    const handleUnload = () => {
+      console.log("Page is being unloaded.");
+      localStorage.removeItem("formData");
+    };
 
-    
-    return ()=>{
-      localStorage.removeItem("formData")
-    
-    }
+    window.addEventListener("unload", handleUnload);
+
+    return () => {
+      window.removeEventListener("unload", handleUnload);
+    };
   }, []);
   
   return (
